@@ -26,22 +26,23 @@ class Register < ActiveRecord::Base
 
 
   def make_change(amount)
-    # nums = {"twenties" => 0, "tens" => 0, "fives" => 0, "twos" => 0, "ones" => 0}
-
     #checks
     # make local hash of self attributes
     # loop through hash using key/value as self.attr/new_amount, and acting on remaining variable(resets at the end of each loop iteration)
     amount = amount
     nums = {20 => 0, 10 => 0, 5 => 0, 2 => 0, 1 => 0}
+
     register_content = {20 => self.twenties, 10 => self.tens, 5 => self.fives, 2 => self.twos, 1 => self.ones}
 
     register_content.each do |denom, num_bills|
-      if denom == 0
+      if denom == 1
           if num_bills !=0 && amount >= denom
             bills_needed = (amount/denom).floor
-            if bills_needed <= num_bills
-              nums[denom] = bills_needed
-            end
+              if bills_needed <= num_bills
+                nums[denom] = bills_needed
+              else
+                return "error"
+              end
           else
             return "error"
           end
@@ -50,17 +51,20 @@ class Register < ActiveRecord::Base
         if bills_needed <= num_bills
           nums[denom] = bills_needed
           amount = (amount % denom)
+          if amount == 0
+            break
+          end
         end
       end
     end
     new_keys = {20 => "twenties", 10 => "tens", 5 => "fives", 2 => "twos", 1 => "ones"}
-    dupl = nums.map {|k, v| p [new_keys[k], v] }.to_h
+    dupl = nums.map {|k, v| [new_keys[k], v] }.to_h
     p dupl
     self.subtract_from_register(dupl)
   end
 ######################
 
-
+    # nums = {"twenties" => 0, "tens" => 0, "fives" => 0, "twos" => 0, "ones" => 0}
     # def check_for_tens(new_amount, nums)
     #   if self.tens != 0 && new_amount >= 10
     #     needed_10s = (new_amount/10).floor

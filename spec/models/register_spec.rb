@@ -66,19 +66,21 @@ describe Register do
 
   describe "make change from register" do
 
+    it "can make change, 20s" do
+      register.add_to_register({"twenties" => 2, "tens" => 4, "fives" => 6, "twos" => 2, "ones" => 10})
+      p register.get_total
+      register.make_change(20)
+      expect(register.get_total).to eq(104)
+    end
+
     it "can make change, 20s, 10s, 5s, 2s, 1s" do
       register.add_to_register({"twenties" => 2, "tens" => 4, "fives" => 6, "twos" => 2, "ones" => 10})
       register.make_change(38)
       expect(register.get_total).to eq(86)
     end
 
-    it "can make change, 20s" do
-      register.add_to_register({"twenties" => 2, "tens" => 4, "fives" => 6, "twos" => 2, "ones" => 10})
-      register.make_change(20)
-      expect(register.get_total).to eq(104)
-    end
 
-    it "can make change, 20s, 10s, 5s, 2s, 1s" do
+    it "can make error" do
       register.add_to_register({"twenties" => 1, "tens" => 0, "fives" => 3, "twos" => 1, "ones" => 1})
      # expect(register.make_change(14)).to raise_error(Register::NoBillsError)
       expect(register.make_change(14)).to eq "error"
