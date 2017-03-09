@@ -21,6 +21,7 @@ class Register < ActiveRecord::Base
     self.twos -= amount_hash["twos"]
     self.ones -= amount_hash["ones"]
     self.save
+    #make a puts method i can call to print as string
   end
 
 
@@ -28,6 +29,10 @@ class Register < ActiveRecord::Base
     nums = {"twenties" => 0, "tens" => 0, "fives" => 0, "twos" => 0, "ones" => 0}
 
     #checks
+    # make local hash of self attributes
+    # loop through hash using key/value as self.attr/new_amount, and acting on remaining variable(resets at the end of each loop iteration)
+
+
     def check_for_tens(new_amount, nums)
       if self.tens != 0 && new_amount >= 10
         needed_10s = (new_amount/10).floor
