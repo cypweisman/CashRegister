@@ -176,7 +176,7 @@ class Register < ActiveRecord::Base
     total += (self.fives * 5)
     total += (self.twos * 2)
     total += self.ones
-    total
+    total.to_s
   end
 
 

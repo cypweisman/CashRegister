@@ -30,7 +30,7 @@ describe Register do
   describe "get total" do
 
     it "can get register total" do
-      expect(register.get_total).to eq(0)
+      expect(register.get_total).to eq('0')
     end
 
   end
@@ -44,7 +44,7 @@ describe Register do
       expect(register.fives).to eq(6)
       expect(register.twos).to eq(2)
       expect(register.ones).to eq(10)
-      expect(register.get_total).to eq(124)
+      expect(register.get_total).to eq('124')
     end
 
   end
@@ -59,7 +59,7 @@ describe Register do
       expect(register.fives).to eq(3)
       expect(register.twos).to eq(2)
       expect(register.ones).to eq(1)
-      expect(register.get_total).to eq(40)
+      expect(register.get_total).to eq('40')
     end
 
   end
@@ -70,13 +70,13 @@ describe Register do
       register.add_to_register({"twenties" => 2, "tens" => 4, "fives" => 6, "twos" => 2, "ones" => 10})
       p register.get_total
       register.make_change(20)
-      expect(register.get_total).to eq(104)
+      expect(register.get_total).to eq('104')
     end
 
     it "can make change, 20s, 10s, 5s, 2s, 1s" do
       register.add_to_register({"twenties" => 2, "tens" => 4, "fives" => 6, "twos" => 2, "ones" => 10})
       register.make_change(38)
-      expect(register.get_total).to eq(86)
+      expect(register.get_total).to eq('86')
     end
 
 
