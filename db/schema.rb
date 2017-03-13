@@ -16,13 +16,13 @@ ActiveRecord::Schema.define(version: 20170308200208) do
   enable_extension "plpgsql"
 
   create_table "registers", force: :cascade do |t|
-    t.integer  "twenties",   null: false
-    t.integer  "tens",       null: false
-    t.integer  "fives",      null: false
-    t.integer  "twos",       null: false
-    t.integer  "ones",       null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "twenties",   default: 0
+    t.integer  "tens",       default: 0
+    t.integer  "fives",      default: 0
+    t.integer  "twos",       default: 0
+    t.integer  "ones",       default: 0
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
 end
