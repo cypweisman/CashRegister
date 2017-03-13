@@ -1,73 +1,202 @@
-
-
 class Register < ActiveRecord::Base
 
-  #attr_accessor :twenties, :tens, :fives, :twos, :ones
+  #ADD TO A GIVEN BILL METHODS
 
-  #no longer need validates
-  #validates :twenties, :tens, :fives, :twos, :ones, presence: true
+  def add_twenties(bills)
+    if bills.is_a? Integer
+        if bills > 0
+            self.twenties += bills
+        end
+    else
+        puts "Please enter an integer"
+    end
+  end
+
+  def add_tens(bills)
+    if bills.is_a? Integer
+        if bills > 0
+            self.tens += bills
+        end
+    else
+       puts "Please enter an integer"
+    end
+  end
+
+  def add_fives(bills)
+    if bills.is_a? Integer
+        if bills > 0
+            self.fives += bills
+        end
+    else
+        puts "Please enter an integer"
+    end
+  end
+
+  def add_twos(bills)
+    if bills.is_a? Integer
+        if bills > 0
+            self.twos += bills
+        end
+    else
+        puts "Please enter an integer"
+    end
+  end
+
+  def add_ones(bills)
+    if bills.is_a? Integer
+        if bills > 0
+            self.ones += bills
+        end
+    else
+        puts "Please enter an integer"
+    end
+  end
+
+  #SUBTRACT FROM A GIVEN BILL METHODS
+
+  def remove_twenties(bills)
+    if bills.is_a? Integer
+        if bills <= self.twenties
+            self.twenties -= bills
+        else
+            puts "Insufficient funds"
+        end
+    else
+        puts "Please enter an integer"
+    end
+  end
+
+  def remove_tens(bills)
+    if bills.is_a? Integer
+        if bills <= self.tens
+            self.tens -= bills
+        else
+            puts "Insufficient funds"
+        end
+    else
+        puts "Please enter an integer"
+    end
+  end
+
+  def remove_fives(bills)
+    if bills.is_a? Integer
+        if bills <= self.fives
+            self.fives -= bills
+        else
+            puts "Insufficient funds"
+        end
+    else
+        puts "Please enter an integer"
+    end
+  end
+
+  def remove_twos(bills)
+    if bills.is_a? Integer
+        if bills <= self.twos
+            self.twos -= bills
+        else
+            puts "Insufficient funds"
+        end
+    else
+        puts "Please enter an integer"
+    end
+  end
+
+  def remove_ones(bills)
+    if bills.is_a? Integer
+        if bills <= self.ones
+            self.ones -= bills
+        else
+            puts "Insufficient funds"
+        end
+    else
+        puts "Please enter an integer"
+    end
+  end
+
+  #GET AS STRING METHODS
 
   def get_twenties_as_str
-      #self.twenties.to_s
+    self.twenties.to_s
   end
 
-  def add_twenties()
-    #if not integet
-    #pass in as interfer
+  def get_tens_as_str
+    self.tens.to_s
   end
 
-  def remove_twenties()
-       #pass in as interfer
+  def get_fives_as_str
+    self.fives.to_s
   end
+
+  def get_twos_as_str
+    self.twos.to_s
+  end
+
+  def get_ones_as_str
+    self.ones.to_s
+  end
+
+  def get_total_as_str
+    total = self.get_total
+    total.to_s
+  end
+
 
   def add_to_register(amount_hash)
-    #and if statement for eahc attribute
+    if amount_hash["twenties"]
+        add_twenties(amount_hash["twenties"])
+    end
 
-    #or call each individual setter
-    self.twenties += amount_hash["twenties"]
-    self.tens += amount_hash["tens"]
-    self.fives += amount_hash["fives"]
-    self.twos += amount_hash["twos"]
-    self.ones += amount_hash["ones"]
-    self.save
+    if amount_hash["tens"]
+        add_tens(amount_hash["tens"])
+    end
+
+    if amount_hash["fives"]
+        add_fives(amount_hash["fives"])
+    end
+
+    if amount_hash["twos"]
+        add_twos(amount_hash["twos"])
+    end
+
+    if amount_hash["ones"]
+        add_ones(amount_hash["ones"])
+    end
   end
 
   def subtract_from_register(amount_hash)
-    #add error for going below 0
-    self.twenties -= amount_hash["twenties"]
-    self.tens -= amount_hash["tens"]
-    self.fives -= amount_hash["fives"]
-    self.twos -= amount_hash["twos"]
-    self.ones -= amount_hash["ones"]
-    self.save
+    if amount_hash["twenties"]
+        remove_twenties(amount_hash["twenties"])
+    end
 
+    if amount_hash["tens"]
+        remove_tens(amount_hash["tens"])
+    end
+
+    if amount_hash["fives"]
+        remove_fives(amount_hash["fives"])
+    end
+
+    if amount_hash["twos"]
+        remove_twos(amount_hash["twos"])
+    end
+
+    if amount_hash["ones"]
+        remove_ones(amount_hash["ones"])
+    end
   end
 
 
   def make_change(amount)
-
     amount = amount
-
-    nums = {20 => 0, 10 => 0, 5 => 0, 2 => 0, 1 => 0}
-
+    change_hash = {20 => 0, 10 => 0, 5 => 0, 2 => 0, 1 => 0}
     register_content = {20 => self.twenties, 10 => self.tens, 5 => self.fives, 2 => self.twos, 1 => self.ones}
 
     register_content.each do |denom, num_bills|
-      # if denom == 1
-      #     if num_bills !=0 && amount >= denom
-      #       bills_needed = (amount/denom).floor
-      #         if bills_needed <= num_bills
-      #           nums[denom] = bills_needed
-      #         else
-      #           return "error"
-      #         end
-      #     else
-      #       return "error"
-      #     end
       if num_bills !=0 && amount >= denom
         bills_needed = (amount/denom).floor
         if bills_needed <= num_bills
-          nums[denom] = bills_needed
+          change_hash[denom] = bills_needed
           amount = (amount % denom)
           if amount == 0
             break
@@ -76,26 +205,28 @@ class Register < ActiveRecord::Base
       end
     end
 
-    def print_change(nums)
-        nums.each do |denom, num_bills|
-            if num_bills != 0
-                puts "#{num_bills} #{denom}s"
-            end
+    def print_change(change_hash)
+      print_out = ''
+      change_hash.each do |denom, num_bills|
+        if num_bills != 0
+          print_out += "#{num_bills} #{denom}s, "
         end
-        #puts "There is your change"
+      end
+      print_out += "is your change"
+      puts print_out
     end
 
-    def remove_change(nums)
-        new_keys = {20 => "twenties", 10 => "tens", 5 => "fives", 2 => "twos", 1 => "ones"}
-        dupl = nums.map {|k, v| [new_keys[k], v] }.to_h
-        self.subtract_from_register(dupl)
+    def remove_change(change_hash)
+      new_keys = {20 => "twenties", 10 => "tens", 5 => "fives", 2 => "twos", 1 => "ones"}
+      dupl = change_hash.map {|k, v| [new_keys[k], v] }.to_h
+      self.subtract_from_register(dupl)
     end
 
     if amount != 0
-      return "Sorry, can't make change"
+      puts "Sorry, can't make change"
     else
-      print_change(nums)
-      remove_change(nums)
+      print_change(change_hash)
+      remove_change(change_hash)
     end
 
   end
@@ -107,7 +238,7 @@ class Register < ActiveRecord::Base
     total += (self.fives * 5)
     total += (self.twos * 2)
     total += self.ones
-    total.to_s
+    total
   end
 
 
