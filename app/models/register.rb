@@ -227,8 +227,6 @@ class Register < ActiveRecord::Base
       end
     end
 
-    #try running it a second time with register has in reverse
-
     def print_change(change_hash)
       print_out = ''
       change_hash.each do |denom, num_bills|
