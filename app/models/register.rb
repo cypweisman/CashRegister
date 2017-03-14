@@ -196,6 +196,7 @@ class Register < ActiveRecord::Base
     previous_bills_needed = 0
     enough_previous_bills = false
 
+
     register_content.each do |denom, num_bills|
 
       if num_bills !=0 && amount >= denom
@@ -227,23 +228,6 @@ class Register < ActiveRecord::Base
       end
     end
 
-    def print_change(change_hash)
-      print_out = ''
-      change_hash.each do |denom, num_bills|
-        if num_bills != 0
-          print_out += "#{num_bills} #{denom}s, "
-        end
-      end
-      print_out += "is your change"
-      puts print_out
-    end
-
-    def remove_change(change_hash)
-      new_keys = {20 => "twenties", 10 => "tens", 5 => "fives", 2 => "twos", 1 => "ones"}
-      dupl = change_hash.map {|k, v| [new_keys[k], v] }.to_h
-      self.subtract_from_register(dupl)
-    end
-
     if amount != 0
       puts "Sorry, can't make change"
     else
@@ -253,7 +237,7 @@ class Register < ActiveRecord::Base
 
   end
 
-  def get_total
+   def get_total
     total = 0
     total += (self.twenties * 20)
     total += (self.tens * 10)
@@ -262,6 +246,27 @@ class Register < ActiveRecord::Base
     total += self.ones
     total
   end
+
+  private
+
+  def print_change(change_hash)
+      print_out = ''
+      change_hash.each do |denom, num_bills|
+        if num_bills != 0
+          print_out += "#{num_bills} #{denom}s, "
+        end
+      end
+      print_out += "is your change"
+      puts print_out
+  end
+
+  def remove_change(change_hash)
+    new_keys = {20 => "twenties", 10 => "tens", 5 => "fives", 2 => "twos", 1 => "ones"}
+    dupl = change_hash.map {|k, v| [new_keys[k], v] }.to_h
+    self.subtract_from_register(dupl)
+  end
+
+
 
 
 end
