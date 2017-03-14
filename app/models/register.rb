@@ -234,8 +234,8 @@ class Register < ActiveRecord::Base
       print_change(change_hash)
       remove_change(change_hash)
     end
-
   end
+
 
    def get_total
     total = 0
@@ -265,8 +265,6 @@ class Register < ActiveRecord::Base
     dupl = change_hash.map {|k, v| [new_keys[k], v] }.to_h
     self.subtract_from_register(dupl)
   end
-
-
 
 
 end

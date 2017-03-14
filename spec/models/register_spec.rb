@@ -164,7 +164,7 @@ describe Register do
 
   end
 
-  describe "albert test" do
+  describe "albert tests" do
 
     it "albert scenario" do
       register.add_to_register({"twenties" => 1, "fives" => 3, "twos" => 4})
