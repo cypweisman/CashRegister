@@ -191,10 +191,16 @@ class Register < ActiveRecord::Base
     amount = amount
     change_hash = {20 => 0, 10 => 0, 5 => 0, 2 => 0, 1 => 0}
     register_content = {20 => self.twenties, 10 => self.tens, 5 => self.fives, 2 => self.twos, 1 => self.ones}
+    previous_denom = 0
+    previous_amount = 0
+    enough_previous_bills = false
 
     register_content.each do |denom, num_bills|
       if num_bills !=0 && amount >= denom
+        enough_previous_bills = true
         bills_needed = (amount/denom).floor
+        previous_amount = amount
+        previous_denom = denom
         if bills_needed <= num_bills
           change_hash[denom] = bills_needed
           amount = (amount % denom)
@@ -202,8 +208,22 @@ class Register < ActiveRecord::Base
             break
           end
         end
+      elsif enough_previous_bills == true
+        if num_bills !=0 && amount < denom
+          new_amount = (previous_amount - previous_denom)
+          if new_amount >= denom
+             bills_needed = (new_amount/denom).floor
+            if bills_needed <= num_bills
+               change_hash[denom] = bills_needed
+               change_hash[previous_denom] = 1
+               amount = (new_amount % denom)
+            end
+          end
+        end
       end
     end
+
+    #try running it a second time with register has in reverse
 
     def print_change(change_hash)
       print_out = ''
