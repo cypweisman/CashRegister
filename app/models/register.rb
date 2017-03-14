@@ -193,33 +193,37 @@ class Register < ActiveRecord::Base
     register_content = {20 => self.twenties, 10 => self.tens, 5 => self.fives, 2 => self.twos, 1 => self.ones}
     previous_denom = 0
     previous_amount = 0
+    previous_bills_needed = 0
     enough_previous_bills = false
 
     register_content.each do |denom, num_bills|
+
       if num_bills !=0 && amount >= denom
         enough_previous_bills = true
         bills_needed = (amount/denom).floor
         previous_amount = amount
         previous_denom = denom
+        previous_bills_needed = bills_needed
         if bills_needed <= num_bills
           change_hash[denom] = bills_needed
           amount = (amount % denom)
           if amount == 0
             break
           end
+        elsif bills_needed > num_bills
+          change_hash[denom] = num_bills
+          amount = (amount - (denom * num_bills))
         end
       elsif enough_previous_bills == true
-        if num_bills !=0 && amount < denom
-          new_amount = (previous_amount - previous_denom)
+          new_amount = (previous_amount - (previous_denom * (previous_bills_needed -1)))
           if new_amount >= denom
              bills_needed = (new_amount/denom).floor
             if bills_needed <= num_bills
                change_hash[denom] = bills_needed
-               change_hash[previous_denom] = 1
+               change_hash[previous_denom] = (previous_bills_needed - 1)
                amount = (new_amount % denom)
             end
           end
-        end
       end
     end
 

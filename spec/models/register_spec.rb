@@ -187,6 +187,13 @@ describe Register do
       expect(register.get_total).to eq(18)
     end
 
+    it "cy scenario 3" do
+      register.add_to_register({"fives" => 3, "twos" => 4})
+      expect(register.get_total).to eq(23)
+      register.make_change(21)
+      expect(register.get_total).to eq(2)
+    end
+
   end
 
 
