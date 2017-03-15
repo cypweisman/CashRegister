@@ -164,5 +164,44 @@ describe Register do
 
   end
 
+  describe "albert tests" do
+
+    it "albert scenario" do
+      register.add_to_register({"twenties" => 1, "fives" => 3, "twos" => 4})
+      expect(register.get_total).to eq(43)
+      register.make_change(11)
+      expect(register.get_total).to eq(32)
+    end
+
+    it "cy scenario" do
+      register.add_to_register({"twenties" => 1, "fives" => 3, "ones" => 4})
+      expect(register.get_total).to eq(39)
+      register.make_change(11)
+      expect(register.get_total).to eq(28)
+    end
+
+    it "cy scenario 2" do
+      register.add_to_register({"tens" => 1, "fives" => 3, "ones" => 4})
+      expect(register.get_total).to eq(29)
+      register.make_change(11)
+      expect(register.get_total).to eq(18)
+    end
+
+    it "cy scenario 3" do
+      register.add_to_register({"fives" => 3, "twos" => 4})
+      expect(register.get_total).to eq(23)
+      register.make_change(21)
+      expect(register.get_total).to eq(2)
+    end
+
+    it "cy scenario 4" do
+      register.add_to_register({"tens" => 1, "fives" => 3, "twos" => 4})
+      expect(register.get_total).to eq(33)
+      register.make_change(16)
+      expect(register.get_total).to eq(17)
+    end
+
+  end
+
 
 end
